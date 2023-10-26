@@ -1,16 +1,12 @@
-﻿using BashForum.Data;
-using BashForum.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Forum.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace BashForum.Controllers
+namespace Forum.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly BashForumContext _context;
 
         public HomeController(ILogger<HomeController> logger)
         {
