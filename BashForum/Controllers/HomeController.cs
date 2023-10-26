@@ -22,7 +22,7 @@ namespace BashForum.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Thread()
         {
             return View();
         }
