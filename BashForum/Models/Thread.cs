@@ -1,4 +1,7 @@
-﻿namespace BashForum.Models
+﻿using BashForum.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BashForum.Models
 {
     public partial class Thread
     {
@@ -8,6 +11,9 @@
 
         public string? Text { get; set; }
 
-        public int Id_author { get; set; }
+        [ForeignKey("CategoryInfoKey")]
+        public BashForumUser Author { get; set; }
+        public Category Category { get; set; }
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

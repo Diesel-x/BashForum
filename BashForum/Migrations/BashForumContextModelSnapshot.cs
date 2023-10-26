@@ -96,6 +96,7 @@ namespace BashForum.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -111,16 +112,20 @@ namespace BashForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Id_author")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id_thread")
-                        .HasColumnType("int");
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ThreadId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ThreadId");
 
                     b.ToTable("Comments");
                 });
@@ -133,8 +138,11 @@ namespace BashForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Id_author")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CategoryInfoKey")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -143,6 +151,10 @@ namespace BashForum.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CategoryInfoKey");
 
                     b.ToTable("Threads");
                 });
@@ -284,6 +296,36 @@ namespace BashForum.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BashForum.Models.Comment", b =>
+                {
+                    b.HasOne("BashForum.Areas.Identity.Data.BashForumUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("BashForum.Models.Thread", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("ThreadId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("BashForum.Models.Thread", b =>
+                {
+                    b.HasOne("BashForum.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BashForum.Areas.Identity.Data.BashForumUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("CategoryInfoKey");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -333,6 +375,11 @@ namespace BashForum.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BashForum.Models.Thread", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

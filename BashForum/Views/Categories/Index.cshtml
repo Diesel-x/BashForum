@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BashForum.Models.Thread>
+﻿@model IEnumerable<BashForum.Models.Category>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,9 +16,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Text)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -27,9 +24,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Text)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

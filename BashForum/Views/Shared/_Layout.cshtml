@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using BashForum.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<BashForumUser> UserManager
+@inject SignInManager<BashForumUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,7 +29,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Йорт</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a class="btn btn-sm btn-primary me-3" asp-area="" asp-controller="Threads" asp-action="Create">Создать весть</a>
+@*                                 <a class="nav-link text-dark me-2" asp-controller="Posts" asp-action="UserPost">Mои посты</a> *@
+                            }
                         </li>
                         <li class="nav-item">
                             <partial name="_LoginPartial" />

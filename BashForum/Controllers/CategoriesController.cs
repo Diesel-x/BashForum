@@ -10,87 +10,87 @@ using BashForum.Models;
 
 namespace BashForum.Controllers
 {
-    public class ThreadsController : Controller
+    public class CategoriesController : Controller
     {
         private readonly BashForumContext _context;
 
-        public ThreadsController(BashForumContext context)
+        public CategoriesController(BashForumContext context)
         {
             _context = context;
         }
 
-        // GET: Threads
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-              return _context.Threads != null ? 
-                          View(await _context.Threads.ToListAsync()) :
-                          Problem("Entity set 'BashForumContext.Threads'  is null.");
+              return _context.Categories != null ? 
+                          View(await _context.Categories.ToListAsync()) :
+                          Problem("Entity set 'BashForumContext.Categories'  is null.");
         }
 
-        // GET: Threads/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Threads == null)
+            if (id == null || _context.Categories == null)
             {
                 return NotFound();
             }
 
-            var thread = await _context.Threads
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (thread == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(thread);
+            return View(category);
         }
 
-        // GET: Threads/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Threads/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Text")] Models.Thread thread)
+        public async Task<IActionResult> Create([Bind("Id,Title")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(thread);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(thread);
+            return View(category);
         }
 
-        // GET: Threads/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Threads == null)
+            if (id == null || _context.Categories == null)
             {
                 return NotFound();
             }
 
-            var thread = await _context.Threads.FindAsync(id);
-            if (thread == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return View(thread);
+            return View(category);
         }
 
-        // POST: Threads/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text")] Models.Thread thread)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] Category category)
         {
-            if (id != thread.Id)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace BashForum.Controllers
             {
                 try
                 {
-                    _context.Update(thread);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ThreadExists(thread.Id))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace BashForum.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(thread);
+            return View(category);
         }
 
-        // GET: Threads/Delete/5
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Threads == null)
+            if (id == null || _context.Categories == null)
             {
                 return NotFound();
             }
 
-            var thread = await _context.Threads
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (thread == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(thread);
+            return View(category);
         }
 
-        // POST: Threads/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Threads == null)
+            if (_context.Categories == null)
             {
-                return Problem("Entity set 'BashForumContext.Threads'  is null.");
+                return Problem("Entity set 'BashForumContext.Categories'  is null.");
             }
-            var thread = await _context.Threads.FindAsync(id);
-            if (thread != null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category != null)
             {
-                _context.Threads.Remove(thread);
+                _context.Categories.Remove(category);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ThreadExists(int id)
+        private bool CategoryExists(int id)
         {
-          return (_context.Threads?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

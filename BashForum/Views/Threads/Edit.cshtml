@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Home/Index.cshtml";
 }
 
 <h1>Edit</h1>
@@ -22,11 +23,6 @@
                 <label asp-for="Text" class="control-label"></label>
                 <input asp-for="Text" class="form-control" />
                 <span asp-validation-for="Text" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id_author" class="control-label"></label>
-                <input asp-for="Id_author" class="form-control" />
-                <span asp-validation-for="Id_author" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

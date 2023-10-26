@@ -1,4 +1,4 @@
-﻿@model BashForum.Models.Thread
+﻿@model BashForum.Models.Category
 
 @{
     ViewData["Title"] = "Create";
@@ -7,7 +7,7 @@
 
 <h1>Create</h1>
 
-<h4>Thread</h4>
+<h4>Category</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,11 +17,6 @@
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
