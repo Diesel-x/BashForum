@@ -15,5 +15,6 @@ public class BashForumContext : IdentityDbContext<BashForumUser>
 
     public BashForumContext(DbContextOptions<BashForumContext> options) : base(options)
     {
+        //this.Database.EnsureDeleted();
     }
 }

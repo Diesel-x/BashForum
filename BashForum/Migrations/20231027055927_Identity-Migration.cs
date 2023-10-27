@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BashForum.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityPlatform : Migration
+    public partial class IdentityMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -177,15 +177,15 @@ namespace BashForum.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryInfoKey = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Threads", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Threads_AspNetUsers_CategoryInfoKey",
-                        column: x => x.CategoryInfoKey,
+                        name: "FK_Threads_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -271,14 +271,14 @@ namespace BashForum.Migrations
                 column: "ThreadId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Threads_AuthorId",
+                table: "Threads",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Threads_CategoryId",
                 table: "Threads",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Threads_CategoryInfoKey",
-                table: "Threads",
-                column: "CategoryInfoKey");
         }
 
         /// <inheritdoc />

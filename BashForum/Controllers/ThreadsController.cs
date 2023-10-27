@@ -9,6 +9,8 @@ using BashForum.Data;
 using BashForum.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Hosting;
 
 namespace BashForum.Controllers
 {
@@ -48,8 +50,9 @@ namespace BashForum.Controllers
         }
 
         // GET: Threads/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
+            ViewBag.Categories = (await _context.Categories.ToListAsync()).Select(item => new SelectListItem { Text = item.Title, Value = item.Id.ToString() });
             return View();
         }
 
@@ -59,12 +62,15 @@ namespace BashForum.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Text")] Models.Thread thread)
+        public async Task<IActionResult> Create([Required] string Category, [Required] string Title, [Required] string Text)
         {
-            //var thread = new Models.Thread
-            //{
-            //    Title = 
-            //};
+            var thread = new Models.Thread
+            {
+                Author = await _context.Users.SingleAsync(user => user.Email == Request.HttpContext.User.Identity.Name),
+                Category = await _context.Categories.FindAsync(int.Parse(Category)),
+                Title = Title,
+                Text = Text
+            };
 
             if (ModelState.IsValid)
             {
@@ -72,7 +78,9 @@ namespace BashForum.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(thread);
+            _context.Add(thread);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = thread.Id });
         }
 
         // GET: Threads/Edit/5

@@ -11,7 +11,6 @@ namespace BashForum.Models
 
         public string? Text { get; set; }
 
-        [ForeignKey("CategoryInfoKey")]
         public BashForumUser Author { get; set; }
         public Category Category { get; set; }
         public List<Comment> Comments { get; set; } = new List<Comment>();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BashForum.Migrations
 {
     [DbContext(typeof(BashForumContext))]
-    [Migration("20231026185520_IdentityPlatform")]
-    partial class IdentityPlatform
+    [Migration("20231027055927_Identity-Migration")]
+    partial class IdentityMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,11 +141,11 @@ namespace BashForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<string>("CategoryInfoKey")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -155,9 +155,9 @@ namespace BashForum.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("CategoryInfoKey");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Threads");
                 });
@@ -314,15 +314,15 @@ namespace BashForum.Migrations
 
             modelBuilder.Entity("BashForum.Models.Thread", b =>
                 {
+                    b.HasOne("BashForum.Areas.Identity.Data.BashForumUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("BashForum.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("BashForum.Areas.Identity.Data.BashForumUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("CategoryInfoKey");
 
                     b.Navigation("Author");
 
