@@ -13,7 +13,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BashForumContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<BashForumUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BashForumContext>();
+//builder.Services.AddDefaultIdentity<BashForumUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BashForumContext>();
+
+builder.Services
+    .AddDefaultIdentity<BashForumUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<BashForumContext>();
 
 builder.Services.Configure<RazorViewEngineOptions>(options => {
     options.PageViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
@@ -24,6 +29,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Default SignIn settings.
     options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedPhoneNumber = false;
+});
+
+builder.Services.Configure<RazorViewEngineOptions>(options => {
+    options.PageViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
 });
 
 var app = builder.Build();
@@ -46,5 +55,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 app.MapRazorPages();
 app.Run();

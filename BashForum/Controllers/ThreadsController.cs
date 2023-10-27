@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BashForum.Data;
 using BashForum.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Reflection;
 
 namespace BashForum.Controllers
 {
@@ -55,9 +57,15 @@ namespace BashForum.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Text")] Models.Thread thread)
         {
+            //var thread = new Models.Thread
+            //{
+            //    Title = 
+            //};
+
             if (ModelState.IsValid)
             {
                 _context.Add(thread);
